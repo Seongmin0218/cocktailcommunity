@@ -36,16 +36,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
+                        /*.anyRequest().permitAll()*/
 
-                        /*
+
                         .requestMatchers(
                             "/",
                             "/index.html",
                             "/js/**", "/css/**", "/images/**", "/favicon.ico", "/api/users/signup", "/api/users/login"
                         ).permitAll()
                         .anyRequest().authenticated()
-                        */
+
 
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
