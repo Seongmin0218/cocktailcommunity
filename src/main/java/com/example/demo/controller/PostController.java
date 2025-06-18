@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.PostRequest;
+import com.example.demo.dto.PostSearchDto;
 import com.example.demo.dto.PostWithCommentCountDto;
 import com.example.demo.entity.Post;
 import com.example.demo.service.PostService;
@@ -45,13 +46,19 @@ public class PostController {
 
     //조회
     @GetMapping("/api/posts")
-    public ResponseEntity<?> getAllPosts() {
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<?> getAllPosts(Principal principal) {
+        List<PostWithCommentCountDto> posts = postService.getAllPostsWithCommentCount(principal.getName());
+        return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/api/posts/{id}")
     public ResponseEntity<?> getPost(@PathVariable Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
+    }
+
+    @PostMapping("/api/posts/search")
+    public ResponseEntity<?> searchPost(@RequestBody PostSearchDto dto) {
+        return ResponseEntity.ok(postService.searchPosts(dto.getKeyword(), dto.getDate()));
     }
 }
 

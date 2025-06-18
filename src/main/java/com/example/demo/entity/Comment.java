@@ -17,16 +17,22 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column
     private String content;
 
-    private String writerEmail;
-
+    @Column
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column
     private LocalDateTime updateAt = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn
+    private User writer;
 
     @PrePersist
     protected void onCreate() {
@@ -54,12 +60,8 @@ public class Comment {
         this.content = content;
     }
 
-    public String getWriter() {
-        return writerEmail;
-    }
-
-    public void setWriter(User writer) {
-        this.writerEmail = String.valueOf(writer);
+    public String getWriterEmail() {
+        return writer.getEmail();
     }
 
     public LocalDateTime getCreateAt() {

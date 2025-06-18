@@ -1,14 +1,24 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.Post;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class PostWithCommentCountDto {
     private Long id;
     private String title;
     private int commentCount;
+    @JsonProperty(namespace = "isLiked")
+    private Boolean isLiked;
 
-    public PostWithCommentCountDto(Long id, String title, int commentCount) {
-        this.id = id;
-        this.title = title;
-        this.commentCount = commentCount;
+    public static PostWithCommentCountDto of(Post post, Boolean isLiked) {
+        PostWithCommentCountDto dto = new PostWithCommentCountDto();
+        dto.id = post.getId();
+        dto.title = post.getTitle();
+        dto.commentCount = post.getComments().size();
+        dto.isLiked = isLiked;
+        return dto;
     }
 
     public Long getId() {

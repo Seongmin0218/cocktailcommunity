@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,15 +18,23 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column
     private String title;
 
+    @Column
     private String content;
 
-
-    private String writerEmail;
-
+    @Column
     private LocalDateTime createdAt;
+    @Column
     private LocalDateTime updateAt;
+
+    @OneToMany(targetEntity = Comment.class, mappedBy = "post")
+    private List<Comment> comments;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn
+    private User writer;
 
     @PrePersist
     protected void onCreate() {
@@ -60,12 +69,8 @@ public class Post {
         this.content = content;
     }
 
-    public String getWriter() {
-        return writerEmail;
-    }
-
-    public void setWriter(User writer) {
-        this.writerEmail = String.valueOf(writer);
+    public String getWriterEmail() {
+        return writer.getEmail();
     }
 
     public LocalDateTime getCreateAt() {
