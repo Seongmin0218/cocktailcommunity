@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.PostRequest;
+import com.example.demo.dto.PostWithCommentCountDto;
 import com.example.demo.entity.Post;
 import com.example.demo.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,7 +51,7 @@ public class PostController {
 
     @GetMapping("/api/posts/{id}")
     public ResponseEntity<?> getPost(@PathVariable Long id) {
-        return ResponseEntity.ok(postService.getPost(id));
+        return ResponseEntity.ok(postService.getPostById(id));
     }
 }
 

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.PostWithCommentCountDto;
 import com.example.demo.entity.Post;
 import com.example.demo.entity.User;
 import com.example.demo.repository.PostRepository;
@@ -53,7 +54,7 @@ public class PostService {
 
     //전체조회
     public List<Post> getAllPosts() {
-        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createAt"));
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     //한개조회
@@ -61,4 +62,14 @@ public class PostService {
         return postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
     }
+
+    public List<PostWithCommentCountDto> getAllPostsWithCommentCount() {
+    List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
+    return posts.stream()
+            .map(post -> new PostWithCommentCountDto(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getComments().size())) // 댓글 수
+            .toList();
+}
 }
